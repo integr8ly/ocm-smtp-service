@@ -1,0 +1,259 @@
+openapi: 3.0.0
+info:
+  title: OCM SMTP Service API
+  description: Manages SMTP credentials
+  version: 0.0.1
+servers:
+  - url: https://api.openshift.com
+    description: Main (production) server
+  - url: https://api.stage.openshift.com
+    description: Staging server
+  - url: /
+    description: current domain
+paths:
+  /api/ocm-smtp-service/v1/smtp:
+    get:
+      summary: Returns a list of SMTP
+      security:
+        - Bearer: []
+      responses:
+        '200':
+          description: A JSON array of SMTP objects
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SMTPList'
+        '401':
+          description: Auth token is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Unauthorized to perform operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Unexpected error occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      parameters:
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/size'
+        - $ref: '#/components/parameters/search'
+        - $ref: '#/components/parameters/orderBy'
+    post:
+      summary: Create a new SMTP credential
+      security:
+        - Bearer: []
+      requestBody:
+        description: SMTP data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SMTP'
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SMTP'
+        '400':
+          description: Validation errors occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Auth token is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Unauthorized to perform operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: SMTP credential already exists
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An unexpected error occurred creating the SMTP credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    ObjectReference:
+      type: object
+      properties:
+        id:
+          type: string
+        kind:
+          type: string
+        href:
+          type: string
+    List:
+      type: object
+      properties:
+        kind:
+          type: string
+        page:
+          type: integer
+        size:
+          type: integer
+        total:
+          type: integer
+      required:
+        - kind
+        - page
+        - size
+        - total
+        - items
+    Error:
+      allOf:
+        - $ref: '#/components/schemas/ObjectReference'
+        - type: object
+          properties:
+            code:
+              type: string
+            reason:
+              type: string
+            operation_id:
+              type: string
+    ErrorList:
+      allOf:
+        - $ref: '#/components/schemas/List'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/Error'
+    SMTP:
+      allOf:
+        - $ref: '#/components/schemas/ObjectReference'
+        - type: object
+          properties:
+            sendGridID:
+              type: string
+            host:
+              type: string
+            port:
+              type: string
+            tls:
+              type: string
+            username:
+              type: string
+            password:
+              type: string
+            created_at:
+              type: string
+              format: date-time
+            updated_at:
+              type: string
+              format: date-time
+    SMTPList:
+      allOf:
+        - $ref: '#/components/schemas/List'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                allOf:
+                  - $ref: '#/components/schemas/SMTP'
+  parameters:
+    id:
+      name: id
+      in: path
+      description: The id of record
+      required: true
+      schema:
+        type: string
+    page:
+      name: page
+      in: query
+      description: Page number of record list when record list exceeds specified page size
+      schema:
+        type: integer
+        default: 1
+        minimum: 1
+      required: false
+    size:
+      name: size
+      in: query
+      description: Maximum number of records to return
+      schema:
+        type: integer
+        default: 100
+        minimum: 0
+      required: false
+    search:
+      name: search
+      in: query
+      required: false
+      description: |-
+        Specifies the search criteria. The syntax of this parameter is
+        similar to the syntax of the _where_ clause of an SQL statement,
+        using the names of the json attributes / column names of the account. 
+        For example, in order to retrieve all the accounts with a username
+        starting with `my`:
+        
+        ```sql
+        username like 'my%'
+        ```
+        
+        The search criteria can also be applied on related resource.
+        For example, in order to retrieve all the subscriptions labeled by `foo=bar`,
+        
+        ```sql
+        subscription_labels.key = 'foo' and subscription_labels.value = 'bar'
+        ```
+        
+        If the parameter isn't provided, or if the value is empty, then
+        all the accounts that the user has permission to see will be
+        returned.
+      schema:
+        type: string
+    orderBy:
+      name: orderBy
+      in: query
+      required: false
+      description: |-
+        Specifies the order by criteria. The syntax of this parameter is
+        similar to the syntax of the _order by_ clause of an SQL statement,
+        but using the names of the json attributes / column of the account.
+        For example, in order to retrieve all accounts ordered by username:
+        
+        ```sql
+        username asc
+        ```
+        
+        Or in order to retrieve all accounts ordered by username _and_ first name:
+        
+        ```sql
+        username asc, firstName asc
+        ```
+        
+        If the parameter isn't provided, or if the value is empty, then
+        no explicit ordering will be applied.
+      schema:
+        type: string

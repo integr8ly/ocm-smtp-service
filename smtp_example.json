@@ -1,0 +1,8 @@
+{
+  "sendgridid": "test-id",
+  "host": "test-host",
+  "port": 8080,
+  "tls": false,
+  "username": "bobby tables",
+  "password": "Password1"
+}
