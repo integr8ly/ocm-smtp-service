@@ -112,12 +112,17 @@ generate:
 	openapi-generator generate -i openapi/ocm-smtp-service.yaml -g go -o pkg/api/openapi
 	go generate ./cmd/ocm-smtp-service
 	gofmt -w pkg/api/openapi
+	rm pkg/api/openapi/go.mod pkg/api/openapi/go.sum
 .PHONY: generate
 
 run: install
 	ocm-smtp-service migrate
 	ocm-smtp-service serve
 .PHONY: run
+
+code/fix:
+	@gofmt -w `find . -type f -name '*.go' -not -path "./vendor/*"`
+.PHONY: code/fix
 
 # TODO CRC Deployment stuff
 

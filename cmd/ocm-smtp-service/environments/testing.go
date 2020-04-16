@@ -3,7 +3,6 @@ package environments
 import (
 	"gitlab.cee.redhat.com/service/ocm-smtp-service/pkg/db"
 	"os"
-
 )
 
 var testingConfigDefaults map[string]string = map[string]string{

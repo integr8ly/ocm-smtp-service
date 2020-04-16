@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"gitlab.cee.redhat.com/service/ocm-smtp-service/pkg/api"
 	"gitlab.cee.redhat.com/service/ocm-smtp-service/pkg/errors"
 	"strings"
 )
@@ -47,6 +48,18 @@ func validateNonNegative(value *int32, field string) validate {
 	return func() *errors.ServiceError {
 		if (*value) < 0 {
 			return errors.Validation("%s must be non-negative", field)
+		}
+		return nil
+	}
+}
+
+func validateSMTPDelete(delete *api.SMTPDeleteRequest) validate {
+	return func() *errors.ServiceError {
+		if delete.ClusterID == nil {
+			return errors.Validation("clusterID is required")
+		}
+		if delete.ClusterID != nil && len(*delete.ClusterID) == 0 {
+			return errors.Validation("clusterID cannot be empty")
 		}
 		return nil
 	}

@@ -26,4 +26,3 @@ const (
 	//ConnectionDetailsUsername Default SendGrid SMTP auth username
 	ConnectionDetailsUsername = "apikey"
 )
-

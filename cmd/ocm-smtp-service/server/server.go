@@ -9,7 +9,6 @@ import (
 
 	"github.com/getsentry/sentry-go"
 	"github.com/golang/glog"
-
 )
 
 type Server interface {

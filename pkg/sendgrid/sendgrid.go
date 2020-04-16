@@ -205,11 +205,11 @@ func (c *Client) Refresh(id string) (*api.SMTP, error) {
 
 func defaultConnectionDetails(apiKeyID, apiKey string) *api.SMTP {
 	return &api.SMTP{
-		SendGridID:       apiKeyID,
-		Host:     ConnectionDetailsHost,
-		Port:     ConnectionDetailsPort,
-		TLS:      ConnectionDetailsTLS,
-		Username: ConnectionDetailsUsername,
-		Password: apiKey,
+		ClusterID: apiKeyID,
+		Host:      ConnectionDetailsHost,
+		Port:      ConnectionDetailsPort,
+		TLS:       ConnectionDetailsTLS,
+		Username:  ConnectionDetailsUsername,
+		Password:  apiKey,
 	}
 }

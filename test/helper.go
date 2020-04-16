@@ -29,8 +29,6 @@ import (
 	"github.com/spf13/pflag"
 
 	amv1 "github.com/openshift-online/ocm-sdk-go/accountsmgmt/v1"
-
-
 )
 
 const (

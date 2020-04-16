@@ -36,22 +36,22 @@ func TxContext() (ctx context.Context, err error) {
 
 // Resolve resolves the current transaction according to the rollback flag.
 func Resolve(ctx context.Context) {
-	ulog := logger.NewUHCLogger(ctx)
+	olog := logger.NewOCMLogger(ctx)
 	tx, ok := ctx.Value(transactionKey).(*txFactory)
 	if !ok {
-		ulog.Errorf("Could not retrieve transaction from context")
+		olog.Errorf("Could not retrieve transaction from context")
 		return
 	}
 
 	if tx.markedForRollback() {
 		if err := rollback(ctx); err != nil {
-			ulog.Errorf("Could not rollback transaction: %v", err)
+			olog.Errorf("Could not rollback transaction: %v", err)
 		}
-		ulog.Infof("Rolled back transaction")
+		olog.Infof("Rolled back transaction")
 	} else {
 		if err := commit(ctx); err != nil {
 			// TODO:  what does the user see when this occurs? seems like they will get a false positive
-			ulog.Errorf("Could not commit transaction: %v", err)
+			olog.Errorf("Could not commit transaction: %v", err)
 			return
 		}
 	}
@@ -68,13 +68,13 @@ func FromContext(ctx context.Context) (*sql.Tx, error) {
 
 // MarkForRollback flags the transaction stored in the context for rollback and logs whatever error caused the rollback
 func MarkForRollback(ctx context.Context, err error) {
-	ulog := logger.NewUHCLogger(ctx)
+	olog := logger.NewOCMLogger(ctx)
 	transaction, ok := ctx.Value(transactionKey).(*txFactory)
 	if !ok {
-		ulog.Errorf("failed to mark transaction for rollback: could not retrieve transaction from context")
+		olog.Errorf("failed to mark transaction for rollback: could not retrieve transaction from context")
 		return
 	}
-	ulog.Infof("Marked transaction for rollback, err: %v", err)
+	olog.Infof("Marked transaction for rollback, err: %v", err)
 	transaction.rollbackFlag.val = true
 }
 

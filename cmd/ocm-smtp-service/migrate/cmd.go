@@ -8,7 +8,6 @@ import (
 	"github.com/golang/glog"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/spf13/cobra"
-
 )
 
 var dbConfig = config.NewDatabaseConfig()

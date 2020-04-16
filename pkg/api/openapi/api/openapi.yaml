@@ -12,6 +12,54 @@ servers:
   url: /
 paths:
   /api/ocm-smtp-service/v1/smtp:
+    delete:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SMTPDeleteRequest'
+        description: ClusterMeta data
+        required: true
+      responses:
+        "202":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterMeta'
+          description: Deleted
+        "400":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Validation errors occurred
+        "401":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Auth token is invalid
+        "403":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Unauthorized to perform operation
+        "409":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: SMTP credential already deleted
+        "500":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An unexpected error occurred deleting the Cluster SMTP credential
+      security:
+      - Bearer: []
+      summary: Delete an SMTP credential for a cluster
     get:
       parameters:
       - description: Page number of record list when record list exceeds specified
@@ -111,7 +159,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/SMTP'
-        description: SMTP data
+        description: ClusterMeta data
         required: true
       responses:
         "201":
@@ -265,10 +313,19 @@ components:
       allOf:
       - $ref: '#/components/schemas/List'
       - $ref: '#/components/schemas/ErrorList_allOf'
+    ClusterMeta:
+      allOf:
+      - $ref: '#/components/schemas/ObjectReference'
+      - $ref: '#/components/schemas/ClusterMeta_allOf'
     SMTP:
       allOf:
       - $ref: '#/components/schemas/ObjectReference'
       - $ref: '#/components/schemas/SMTP_allOf'
+    SMTPDeleteRequest:
+      properties:
+        clusterID:
+          type: string
+      type: object
     SMTPList:
       allOf:
       - $ref: '#/components/schemas/List'
@@ -287,9 +344,13 @@ components:
           items:
             $ref: '#/components/schemas/Error'
           type: array
+    ClusterMeta_allOf:
+      properties:
+        clusterID:
+          type: string
     SMTP_allOf:
       properties:
-        sendGridID:
+        clusterID:
           type: string
         host:
           type: string

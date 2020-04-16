@@ -8,7 +8,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
-	)
+)
 
 var singleton *ConnectionFactory
 var once sync.Once

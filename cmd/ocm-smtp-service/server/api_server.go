@@ -23,8 +23,6 @@ import (
 	"github.com/golang/glog"
 	gorillahandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-
-
 )
 
 type apiServer struct {
@@ -112,6 +110,7 @@ func NewAPIServer() Server {
 	apiV1SMTPRouter := apiV1Router.PathPrefix("/smtp").Subrouter()
 	apiV1SMTPRouter.HandleFunc("", smtpHandler.List).Methods(http.MethodGet)
 	apiV1SMTPRouter.HandleFunc("", smtpHandler.Create).Methods(http.MethodPost)
+	apiV1SMTPRouter.HandleFunc("/{id}", smtpHandler.Delete).Methods(http.MethodDelete)
 	apiV1SMTPRouter.Use(authMiddleware.AuthenticateAccountJWT)
 	// TODO
 	// apiV1SMTPRouter.Use(authzMiddleware.AuthorizeApi)

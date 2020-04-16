@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**SendGridID** | **string** |  | [optional] 
+**ClusterID** | **string** |  | [optional] 
 **Host** | **string** |  | [optional] 
 **Port** | **string** |  | [optional] 
 **Tls** | **string** |  | [optional] 

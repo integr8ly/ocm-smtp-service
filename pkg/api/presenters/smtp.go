@@ -8,14 +8,14 @@ import (
 func ConvertSMTP(smtp openapi.Smtp) *api.SMTP {
 	return &api.SMTP{
 		Meta: api.Meta{
-			ID:        smtp.Id,
+			ID: smtp.Id,
 		},
-		SendGridID: smtp.SendGridID,
-		Host: smtp.Host,
-		Port: smtp.Port,
-		TLS: smtp.Tls,
-		Username: smtp.Username,
-		Password: smtp.Password,
+		ClusterID: smtp.ClusterID,
+		Host:      smtp.Host,
+		Port:      smtp.Port,
+		TLS:       smtp.Tls,
+		Username:  smtp.Username,
+		Password:  smtp.Password,
 	}
 }
 
@@ -25,7 +25,7 @@ func PresentSMTP(smtp *api.SMTP) openapi.Smtp {
 		Id:        reference.Id,
 		Kind:      reference.Kind,
 		Href:      reference.Href,
-		SendGridID: smtp.SendGridID,
+		ClusterID: smtp.ClusterID,
 		Host:      smtp.Host,
 		Port:      smtp.Port,
 		Tls:       smtp.TLS,

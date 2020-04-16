@@ -4,9 +4,42 @@ All URIs are relative to *https://api.openshift.com*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**ApiOcmSmtpServiceV1SmtpDelete**](DefaultApi.md#ApiOcmSmtpServiceV1SmtpDelete) | **Delete** /api/ocm-smtp-service/v1/smtp | Delete an SMTP credential for a cluster
 [**ApiOcmSmtpServiceV1SmtpGet**](DefaultApi.md#ApiOcmSmtpServiceV1SmtpGet) | **Get** /api/ocm-smtp-service/v1/smtp | Returns a list of SMTP
 [**ApiOcmSmtpServiceV1SmtpPost**](DefaultApi.md#ApiOcmSmtpServiceV1SmtpPost) | **Post** /api/ocm-smtp-service/v1/smtp | Create a new SMTP credential
 
+
+
+## ApiOcmSmtpServiceV1SmtpDelete
+
+> ClusterMeta ApiOcmSmtpServiceV1SmtpDelete(ctx, smtpDeleteRequest)
+
+Delete an SMTP credential for a cluster
+
+### Required Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+**ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
+**smtpDeleteRequest** | [**SmtpDeleteRequest**](SmtpDeleteRequest.md)| ClusterMeta data | 
+
+### Return type
+
+[**ClusterMeta**](ClusterMeta.md)
+
+### Authorization
+
+[Bearer](../README.md#Bearer)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## ApiOcmSmtpServiceV1SmtpGet
@@ -65,7 +98,7 @@ Create a new SMTP credential
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
 **ctx** | **context.Context** | context for authentication, logging, cancellation, deadlines, tracing, etc.
-**smtp** | [**Smtp**](Smtp.md)| SMTP data | 
+**smtp** | [**Smtp**](Smtp.md)| ClusterMeta data | 
 
 ### Return type
 

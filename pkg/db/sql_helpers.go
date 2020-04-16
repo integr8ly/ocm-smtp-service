@@ -9,7 +9,6 @@ import (
 	"github.com/yaacov/tree-search-language/pkg/tsl"
 	"github.com/yaacov/tree-search-language/pkg/walkers/ident"
 	sqlFilter "github.com/yaacov/tree-search-language/pkg/walkers/sql"
-
 )
 
 // Check if a field name starts with properties.

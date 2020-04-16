@@ -12,7 +12,6 @@ import (
 	"github.com/getsentry/sentry-go"
 	"github.com/golang/glog"
 	"github.com/spf13/pflag"
-
 )
 
 const (

@@ -13,12 +13,12 @@ import (
 func addSMTPs() *gormigrate.Migration {
 	type Smtp struct {
 		Model
-		SendGridID string
-		Host string
-		Port int
-		TLS bool
-		Username string `gorm:"index"`
-		Password string
+		ClusterID string
+		Host      string
+		Port      int
+		TLS       bool
+		Username  string `gorm:"index"`
+		Password  string
 	}
 
 	return &gormigrate.Migration{
@@ -37,4 +37,3 @@ func addSMTPs() *gormigrate.Migration {
 		},
 	}
 }
-

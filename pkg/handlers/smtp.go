@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"fmt"
+	"github.com/gorilla/mux"
 	"gitlab.cee.redhat.com/service/ocm-smtp-service/pkg/api/openapi"
 	"gitlab.cee.redhat.com/service/ocm-smtp-service/pkg/api/presenters"
 	"gitlab.cee.redhat.com/service/ocm-smtp-service/pkg/errors"
@@ -31,9 +33,9 @@ func (s smtpHandler) List(w http.ResponseWriter, r *http.Request) {
 				return nil, err
 			}
 			smtpList := openapi.SmtpList{
-				Kind: "SMTPList",
-				Page: int32(paging.Page),
-				Size: int32(paging.Size),
+				Kind:  "SMTPList",
+				Page:  int32(paging.Page),
+				Size:  int32(paging.Size),
 				Total: int32(paging.Total),
 				Items: []openapi.Smtp{},
 			}
@@ -44,7 +46,6 @@ func (s smtpHandler) List(w http.ResponseWriter, r *http.Request) {
 			return smtpList, nil
 		},
 	}
-
 	handleList(w, r, cfg)
 }
 
@@ -53,21 +54,19 @@ func (s smtpHandler) Get(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s smtpHandler) Create(w http.ResponseWriter, r *http.Request) {
-	var smtp openapi.Smtp
+	var clusterMeta openapi.ClusterMeta
 	cfg := &handlerConfig{
-		MarshalInto:  &smtp,
-		Validate:     []validate{
-			validateEmpty(&smtp.Id, "id"),
-			validateNotEmpty(&smtp.Username, "username"),
-			validateNotEmpty(&smtp.Password, "password"),
-			validateNotEmpty(&smtp.Port, "port"),
-			validateNotEmpty(&smtp.Tls, "tls"),
-			validateNotEmpty(&smtp.Host, "host"),
+		// cluster id
+		MarshalInto: &clusterMeta,
+		// validate the body has the cluster id
+		Validate: []validate{
+			validateEmpty(&clusterMeta.Id, "id"),
+			validateNotEmpty(&clusterMeta.ClusterID, "clusterID"),
 		},
 		Action: func() (interface{}, *errors.ServiceError) {
 			ctx := r.Context()
-			converted := presenters.ConvertSMTP(smtp)
-			created, err := s.service.Create(ctx, converted)
+			convertedMeta := presenters.ConvertClusterMeta(clusterMeta)
+			created, err := s.service.Create(ctx, convertedMeta)
 			if err != nil {
 				return nil, err
 			}
@@ -83,6 +82,21 @@ func (s smtpHandler) Patch(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s smtpHandler) Delete(w http.ResponseWriter, r *http.Request) {
-	handleError(r.Context(), w, errors.NotImplemented("delete"))
+	cfg := &handlerConfig{
+		// todo add validation
+		Action: func() (interface{}, *errors.ServiceError) {
+			ctx := r.Context()
+			id := mux.Vars(r)["id"]
+			found, err := s.service.Get(ctx, id)
+			if err != nil {
+				return nil, err
+			}
+			if err := s.service.Delete(ctx, found); err != nil {
+				return nil, err
+			}
+			return fmt.Sprintf("%s deleted", id), nil
+		},
+		ErrorHandler: handleError,
+	}
+	handleDelete(w, r, cfg, http.StatusAccepted)
 }
-

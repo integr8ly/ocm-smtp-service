@@ -8,7 +8,6 @@ import (
 	"net/http"
 
 	"github.com/getsentry/sentry-go"
-
 )
 
 // TransactionMiddleware creates a new HTTP middleware that begins a database transaction
@@ -18,8 +17,8 @@ func TransactionMiddleware(next http.Handler) http.Handler {
 		// Create a new Context with the transaction stored in it.
 		ctx, err := NewContext(r.Context())
 		if err != nil {
-			ulog := logger.NewUHCLogger(ctx)
-			ulog.Errorf("Could not create transaction: %v", err)
+			olog := logger.NewOCMLogger(ctx)
+			olog.Errorf("Could not create transaction: %v", err)
 			// use default error to avoid exposing internals to users
 			err := errors.GeneralError("")
 			operationID := logger.GetOperationID(ctx)

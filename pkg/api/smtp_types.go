@@ -4,12 +4,12 @@ import "github.com/jinzhu/gorm"
 
 type SMTP struct {
 	Meta
-	SendGridID string
-	Host string
-	Port string
-	TLS string
-	Username string
-	Password string
+	ClusterID string
+	Host      string
+	Port      string
+	TLS       string
+	Username  string
+	Password  string
 }
 
 // SMTPClient to create SMTP details for an OpenShift cluster by its ID
@@ -33,4 +33,8 @@ func (l SMTPList) Index() SMTPIndex {
 
 func (org *SMTP) BeforeCreate(scope *gorm.Scope) error {
 	return scope.SetColumn("ID", NewID())
+}
+
+type SMTPDeleteRequest struct {
+	ClusterID *string `json:"clusterID,omitempty"`
 }

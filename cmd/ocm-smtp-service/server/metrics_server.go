@@ -10,7 +10,6 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-
 )
 
 func NewMetricsServer() Server {
@@ -45,7 +44,7 @@ func (s metricsServer) Serve(listener net.Listener) {
 }
 
 func (s metricsServer) Start() {
-	ulog := logger.NewUHCLogger(context.Background())
+	olog := logger.NewOCMLogger(context.Background())
 	var err error
 	if env().Config.Metrics.EnableHTTPS {
 		if env().Config.Server.HTTPSCertFile == "" || env().Config.Server.HTTPSKeyFile == "" {
@@ -56,14 +55,14 @@ func (s metricsServer) Start() {
 		}
 
 		// Serve with TLS
-		ulog.Infof("Serving Metrics with TLS at %s", env().Config.Server.BindAddress)
+		olog.Infof("Serving Metrics with TLS at %s", env().Config.Server.BindAddress)
 		err = s.httpServer.ListenAndServeTLS(env().Config.Server.HTTPSCertFile, env().Config.Server.HTTPSKeyFile)
 	} else {
-		ulog.Infof("Serving Metrics without TLS at %s", env().Config.Metrics.BindAddress)
+		olog.Infof("Serving Metrics without TLS at %s", env().Config.Metrics.BindAddress)
 		err = s.httpServer.ListenAndServe()
 	}
 	check(err, "Metrics server terminated with errors")
-	ulog.Infof("Metrics server terminated")
+	olog.Infof("Metrics server terminated")
 }
 
 func (s metricsServer) Stop() error {

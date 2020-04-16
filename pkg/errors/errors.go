@@ -7,7 +7,7 @@ import (
 	"strconv"
 
 	"github.com/golang/glog"
-	)
+)
 
 const (
 	// Prefix used for error code strings

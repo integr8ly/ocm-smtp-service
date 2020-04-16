@@ -5,6 +5,7 @@ import (
 	sg "github.com/sendgrid/sendgrid-go"
 	"github.com/sirupsen/logrus"
 )
+
 //RESTClient Thin wrapper around the SendGrid package
 //go:generate moq -out sendgridrest_moq.go . RESTClient
 type RESTClient interface {

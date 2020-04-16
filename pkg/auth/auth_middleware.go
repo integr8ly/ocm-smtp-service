@@ -10,7 +10,6 @@ import (
 	jwtmiddleware "github.com/auth0/go-jwt-middleware"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/getsentry/sentry-go"
-
 )
 
 type JWTMiddleware interface {

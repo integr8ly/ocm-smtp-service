@@ -28,12 +28,12 @@ func (writer *loggingWriter) WriteHeader(status int) {
 }
 
 func (writer *loggingWriter) log(log string, err error) {
-	ulog := logger.NewUHCLogger(writer.request.Context())
+	olog := logger.NewOCMLogger(writer.request.Context())
 	switch err {
 	case nil:
-		ulog.V(LoggingThreshold).Infof(log)
+		olog.V(LoggingThreshold).Infof(log)
 	default:
-		ulog.Errorf("Unable to format request/response for log. Error: %s", err.Error())
+		olog.Errorf("Unable to format request/response for log. Error: %s", err.Error())
 	}
 }
 

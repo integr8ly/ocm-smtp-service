@@ -32,12 +32,15 @@ All URIs are relative to *https://api.openshift.com*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*DefaultApi* | [**ApiOcmSmtpServiceV1SmtpDelete**](docs/DefaultApi.md#apiocmsmtpservicev1smtpdelete) | **Delete** /api/ocm-smtp-service/v1/smtp | Delete an SMTP credential for a cluster
 *DefaultApi* | [**ApiOcmSmtpServiceV1SmtpGet**](docs/DefaultApi.md#apiocmsmtpservicev1smtpget) | **Get** /api/ocm-smtp-service/v1/smtp | Returns a list of SMTP
 *DefaultApi* | [**ApiOcmSmtpServiceV1SmtpPost**](docs/DefaultApi.md#apiocmsmtpservicev1smtppost) | **Post** /api/ocm-smtp-service/v1/smtp | Create a new SMTP credential
 
 
 ## Documentation For Models
 
+ - [ClusterMeta](docs/ClusterMeta.md)
+ - [ClusterMetaAllOf](docs/ClusterMetaAllOf.md)
  - [Error](docs/Error.md)
  - [ErrorAllOf](docs/ErrorAllOf.md)
  - [ErrorList](docs/ErrorList.md)
@@ -46,6 +49,7 @@ Class | Method | HTTP request | Description
  - [ObjectReference](docs/ObjectReference.md)
  - [Smtp](docs/Smtp.md)
  - [SmtpAllOf](docs/SmtpAllOf.md)
+ - [SmtpDeleteRequest](docs/SmtpDeleteRequest.md)
  - [SmtpList](docs/SmtpList.md)
  - [SmtpListAllOf](docs/SmtpListAllOf.md)
 

@@ -51,7 +51,7 @@ paths:
       security:
         - Bearer: []
       requestBody:
-        description: SMTP data
+        description: ClusterMeta data
         required: true
         content:
           application/json:
@@ -90,6 +90,54 @@ paths:
                 $ref: '#/components/schemas/Error'
         '500':
           description: An unexpected error occurred creating the SMTP credential
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Delete an SMTP credential for a cluster
+      security:
+        - Bearer: []
+      requestBody:
+        description: ClusterMeta data
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SMTPDeleteRequest'
+      responses:
+        '202':
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClusterMeta'
+        '400':
+          description: Validation errors occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Auth token is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Unauthorized to perform operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: SMTP credential already deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: An unexpected error occurred deleting the Cluster SMTP credential
           content:
             application/json:
               schema:
@@ -147,12 +195,19 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Error'
+    ClusterMeta:
+      allOf:
+        - $ref: '#/components/schemas/ObjectReference'
+        - type: object
+          properties:
+            clusterID:
+              type: string
     SMTP:
       allOf:
         - $ref: '#/components/schemas/ObjectReference'
         - type: object
           properties:
-            sendGridID:
+            clusterID:
               type: string
             host:
               type: string
@@ -170,6 +225,11 @@ components:
             updated_at:
               type: string
               format: date-time
+    SMTPDeleteRequest:
+      type: object
+      properties:
+        clusterID:
+          type: string
     SMTPList:
       allOf:
         - $ref: '#/components/schemas/List'

@@ -39,4 +39,3 @@ func marshalRequestBody(body interface{}, bodyDesc string) ([]byte, error) {
 	}
 	return bodyJSON, nil
 }
-

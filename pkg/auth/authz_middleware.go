@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"gitlab.cee.redhat.com/service/ocm-smtp-service/pkg/client/ocm"
 	"net/http"
-
 )
 
 type AuthorizationMiddleware interface {

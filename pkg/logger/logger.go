@@ -8,15 +8,15 @@ import (
 	"github.com/golang/glog"
 )
 
-type UHCLogger interface {
-	V(level int32) UHCLogger
+type OCMLogger interface {
+	V(level int32) OCMLogger
 	Infof(format string, args ...interface{})
 	Warningf(format string, args ...interface{})
 	Errorf(format string, args ...interface{})
 	Fatalf(format string, args ...interface{})
 }
 
-var _ UHCLogger = &logger{}
+var _ OCMLogger = &logger{}
 
 type logger struct {
 	context   context.Context
@@ -27,8 +27,8 @@ type logger struct {
 	sentryHub *sentry.Hub
 }
 
-// NewUHCLogger creates a new logger instance with a default verbosity of 1
-func NewUHCLogger(ctx context.Context) UHCLogger {
+// NewOCMLogger creates a new logger instance with a default verbosity of 1
+func NewOCMLogger(ctx context.Context) OCMLogger {
 	logger := &logger{
 		context:   ctx,
 		level:     1,
@@ -57,7 +57,7 @@ func (l *logger) prepareLogPrefix(format string, args ...interface{}) string {
 	return fmt.Sprintf("%s%s", prefix, orig)
 }
 
-func (l *logger) V(level int32) UHCLogger {
+func (l *logger) V(level int32) OCMLogger {
 	return &logger{
 		context:   l.context,
 		accountID: l.accountID,

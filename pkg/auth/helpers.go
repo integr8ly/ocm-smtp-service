@@ -18,7 +18,6 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/golang/glog"
-
 )
 
 // jwtCert on jwt key
@@ -37,13 +36,13 @@ type jwtKeys struct {
 }
 
 func handleError(ctx context.Context, w http.ResponseWriter, code errors.ServiceErrorCode, reason string) {
-	ulog := logger.NewUHCLogger(ctx)
+	olog := logger.NewOCMLogger(ctx)
 	operationID := logger.GetOperationID(ctx)
 	err := errors.New(code, reason)
 	if err.HttpCode >= 400 && err.HttpCode <= 499 {
-		ulog.Infof(err.Error())
+		olog.Infof(err.Error())
 	} else {
-		ulog.Errorf(err.Error())
+		olog.Errorf(err.Error())
 	}
 
 	writeJSONResponse(w, err.HttpCode, err.AsOpenapiError(operationID))
