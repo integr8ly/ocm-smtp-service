@@ -3,6 +3,9 @@ OCM SMTP Service
 
 This project is an SMTP credential management service for RHMI
 
+## *** NOTICE ***
+This Github repository has been archived and migrated to [Gitlab](https://gitlab.cee.redhat.com/service/ocm-sendgrid-service)
+
 ## SMTP Management OpenAPI 
 [SMTP Management OpenAPI Documentation](./pkg/api/openapi/README.md)
 
